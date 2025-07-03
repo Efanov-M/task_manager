@@ -32,11 +32,20 @@ print(
 def show_all_tasks():
     with open("task.txt", "r", encoding="utf-8") as f:
         lines = f.readlines()
+        task_lines = lines[1:]
+        tasks = []
+        for line in task_lines:
+            task_parts = line.strip().split("|")
+            tasks.append(task_parts)
+
+        sort_task = sorted(tasks, key=lambda x: int(x[2]))
+
         # собираем файл в один текст
         print(f"[0] {lines[0].strip()}")
         # выводим шапку так что бы ее нельзя было удалить
-        for idx, line in enumerate(lines[1:], start=1):
-            print(f"[{idx}] {line.strip()}")
+        for idx, line in enumerate(sort_task, start=1):
+
+            print(f"[{idx}] {line}")
 
 
 # Добавляем задачу
