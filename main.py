@@ -77,12 +77,35 @@ def find_task_on_name():
         lines = f.readlines()
         # собираем в один список
         user_find = input("Введите имя для поиска: ")
-        user_find = user_find.strip()
+        user_find = user_find.strip().lower()
+        found = False
         for idx, line in enumerate(lines[1:], start=1):
 
             task_line = line.split("|")
             if user_find in task_line[0].strip().lower():
+                found = True
                 print(f"Для {user_find}доступна следующая задача{task_line[1:]}")
+        if not found:
+            print("Пользователь не найден")
+
+
+# Удаление задачи по индексу
+def del_task():
+    try:
+        user_del = int(input("Введите номер строки которую хотите удалить: "))
+        with open("task.txt", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            if user_del > 0 and user_del < len(lines):
+                del lines[user_del]
+            else:
+                raise ValueError
+    except ValueError:
+        print("Вы ввели не число или ввели число <=0")
+        return
+
+    with open("task.txt", "w", encoding="utf-8") as f:
+        for line in lines:
+            f.write(f"{line}")
 
 
 while True:
@@ -94,6 +117,8 @@ while True:
 
     elif user_menu == "2":
         add_task()
+    elif user_menu == "3":
+        find_task_on_name()
     elif user_menu == "5":
         print("До свидания!!!")
         break
