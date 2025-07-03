@@ -71,6 +71,20 @@ def add_task():
             print("Нельзя импользовать символ '|'", ve)
 
 
+# Поиск по имени
+def find_task_on_name():
+    with open("task.txt", "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        # собираем в один список
+        user_find = input("Введите имя для поиска: ")
+        user_find = user_find.strip()
+        for idx, line in enumerate(lines[1:], start=1):
+
+            task_line = line.split("|")
+            if user_find in task_line[0].strip().lower():
+                print(f"Для {user_find}доступна следующая задача{task_line[1:]}")
+
+
 while True:
 
     user_menu = input("Выберите пункт: ")
