@@ -4,7 +4,8 @@ if not os.path.isfile("task.txt"):
 
     while True:
         user_choise = input(
-            "Файл не найден, вы хотите создать новыый ? (введите y-да, n-нет):  "
+            """Файл не найден, вы хотите создать новыый ? 
+            (введите y-да, n-нет):  """
         )
         if user_choise.lower() == "y":
             with open("task.txt", "w", encoding="utf-8") as f:
@@ -22,7 +23,8 @@ print(
     Пункт 2 — Добавить задачу
     Пункт 3 — Показать задачи по имени
     Пункт 4 — Удалить задачу по номеру
-    Пункт 5 — Выход"""
+    Пункт 5 - Изменить задачу
+    Пункт 6 — Выход"""
 )
 
 
@@ -53,7 +55,7 @@ def add_task():
             else:
                 raise ValueError
             user_priority = input("Введите приоритетность от 1 до 5: ")
-            # проверяем что бы приоритет был цифрой в диапазоне от 1 до 5 без "|"
+            # проверяем что бы приоритет был цифрой в диапазоне от1до5 без "|"
             if "|" in user_priority:
                 raise ValueError("Запрещённый символ")
             if not user_priority.isdigit():
@@ -84,7 +86,7 @@ def find_task_on_name():
             task_line = line.split("|")
             if user_find in task_line[0].strip().lower():
                 found = True
-                print(f"Для {user_find}доступна следующая задача{task_line[1:]}")
+                print(f"Для {user_find}доступна задача{task_line[1:]}")
         if not found:
             print("Пользователь не найден")
 
@@ -108,6 +110,57 @@ def del_task():
             f.write(f"{line}")
 
 
+# Редактирование значений
+def chachge_task():
+    try:
+        user_change = int(
+            input(
+                """Введите номер строки которую 
+                                хотите изменить: """
+            )
+        )
+        with open("task.txt", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            if user_change > 0 and user_change < len(lines):
+                target_line = lines[user_change]
+                parts = target_line.strip().split("|")
+                change_input = input(
+                    "Выбирите что хотите изменить,n-имя,t-задачу,p-приоритет: "
+                )
+                if change_input == "n":
+                    change_name = input("Введите новое имя: ")
+
+                    parts[0] = change_name.strip()
+
+                elif change_input == "t":
+                    change_task = input("Введите новую задачу: ")
+                    parts[1] = change_task.strip()
+
+                elif change_input == "p":
+                    change_priority = input("Введите новый приоритет от 0 до 5: ")
+                    if "|" in change_priority:
+                        raise ValueError("Запрещённый символ")
+                    if not change_priority.isdigit():
+                        raise ValueError("Приоритет должен быть числом")
+                    if not 1 <= int(change_priority) <= 5:
+                        raise ValueError("Приоритет должен быть от 1 до 5")
+                    parts[2] = change_priority.strip()
+                else:
+                    print("Неверный выбор. Допустимы только n, t или p.")
+                    return
+
+                lines[user_change] = "| ".join(parts) + "\n"
+
+            else:
+                raise ValueError
+    except ValueError:
+        print("Вы ввели не число или ввели число <=0")
+        return
+    with open("task.txt", "w", encoding="utf-8") as f:
+        for line in lines:
+            f.write(f"{line}")
+
+
 while True:
 
     user_menu = input("Выберите пункт: ")
@@ -119,6 +172,12 @@ while True:
         add_task()
     elif user_menu == "3":
         find_task_on_name()
+    elif user_menu == "4":
+        del_task()
     elif user_menu == "5":
+        chachge_task()
+    elif user_menu == "6":
         print("До свидания!!!")
         break
+    else:
+        print("Вы ввели не существующуб команду")
