@@ -37,12 +37,49 @@ def show_all_tasks():
             print(f"[{idx}] {line.strip()}")
 
 
+# Добавляем задачу
+def add_task():
+    with open("task.txt", "a", encoding="utf-8") as f:
+        try:
+            str_task = []
+            user_name = input("Введите имя:  ")
+            if "|" not in user_name:
+                str_task.append(user_name.strip())
+            else:
+                raise ValueError
+            user_task = input("Введите задачу: ")
+            if "|" not in user_task:
+                str_task.append(user_task.strip())
+            else:
+                raise ValueError
+            user_priority = input("Введите приоритетность от 1 до 5: ")
+            # проверяем что бы приоритет был цифрой в диапазоне от 1 до 5 включительно без "|"
+            if "|" in user_priority:
+                raise ValueError("Запрещённый символ")
+            if not user_priority.isdigit():
+                raise ValueError("Приоритет должен быть числом")
+            if not 1 <= int(user_priority) <= 5:
+                raise ValueError("Приоритет должен быть от 1 до 5")
+
+            str_task.append(user_priority.strip())
+
+            line_task = "| ".join(str_task)
+            # добавление новой строки в конец файла.
+            f.write(f"{line_task}\n")
+            print(f"{line_task}добавлено в файл")
+        except ValueError as ve:
+            print("Нельзя импользовать символ '|'", ve)
+
+
 while True:
 
     user_menu = input("Выберите пункт: ")
 
     if user_menu == "1":
         show_all_tasks()
+
+    elif user_menu == "2":
+        add_task()
     elif user_menu == "5":
         print("До свидания!!!")
         break
