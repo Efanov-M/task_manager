@@ -24,4 +24,25 @@ print(
     Пункт 4 — Удалить задачу по номеру
     Пункт 5 — Выход"""
 )
-user_menu = input("Выберите пункт: ")
+
+
+# Чтение и нумерация строк
+def show_all_tasks():
+    with open("task.txt", "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        # собираем файл в один текст
+        print(f"[0] {lines[0].strip()}")
+        # выводим шапку так что бы ее нельзя было удалить
+        for idx, line in enumerate(lines[1:], start=1):
+            print(f"[{idx}] {line.strip()}")
+
+
+while True:
+
+    user_menu = input("Выберите пункт: ")
+
+    if user_menu == "1":
+        show_all_tasks()
+    elif user_menu == "5":
+        print("До свидания!!!")
+        break
