@@ -53,7 +53,7 @@ def add_task():
             else:
                 raise ValueError
             user_priority = input("Введите приоритетность от 1 до 5: ")
-            # проверяем что бы приоритет был цифрой в диапазоне от 1 до 5 включительно без "|"
+            # проверяем что бы приоритет был цифрой в диапазоне от 1 до 5 без "|"
             if "|" in user_priority:
                 raise ValueError("Запрещённый символ")
             if not user_priority.isdigit():
